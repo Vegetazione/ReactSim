@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista Json</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-black">
+    <div class="flex flex-col justify-center items-center gap-6 text-xl m-4 bg-slate-300 rounded-3xl p-8" id="container">
+      <p>Lista Json</p>
+    </div>
+    <div class="flex flex-col justify-center items-center" id="btn-container">
+
+    </div>
+
+    <script>
+      const students = JSON.parse(
+        '[{"id": 1, "fullname": "mario rossi", "avg": 6}, {"id": 2, "fullname": "luigi verdi", "avg": 4}, {"id": 3, "fullname": "peach pink", "avg": 8}, {"id": 4, "fullname": "wario rossi", "avg": 9}]'
+      );
+      function $(elId) {
+        return document.getElementById(elId);
+      }
+      let container = $("container");
+      let btnContainer =$("btn-container")
+        students.forEach((student) => {
+        const studentElem = document.createElement("div");
+        studentElem.classList.add("student");
+        studentElem.innerHTML = `
+        <p>ID: ${student.id}</p>
+        <p>Fullname: ${student.fullname}</p>
+        <p>Avg: ${student.avg}</p>
+         `;
+        container.appendChild(studentElem);
+      });
+
+      const btnCrescente=document.createElement("button")
+      btnCrescente.textContent="Ordina Per voto Più alto "
+      btnCrescente.addEventListener("click",()=>{
+        students.sort((a,b)=>b.avg - a.avg)
+        studentsList()
+      })
+
+    const btnDecrescente = document.createElement('button');
+    btnDecrescente.textContent = 'Ordina Per voto più Basso';
+    btnDecrescente.addEventListener('click', () => {
+    students.sort((a, b) => a.avg - b.avg);
+    studentsList()
+    });
+
+    btnContainer.appendChild(btnCrescente)
+    btnCrescente.classList.add("p-8", "bg-emerald-400", "m-8","text-white","rounded-2xl","hover:bg-emerald-600", "cursor:pointer","text-xl" )
+    btnContainer.appendChild(btnDecrescente)
+    btnDecrescente.classList.add("p-8", "bg-yellow-400", "m-8","text-black","rounded-2xl","hover:bg-yellow-600", "cursor:pointer","text-xl" )
+
+    function studentsList() {
+    container.innerHTML = '';
+     students.forEach(student => {
+    const studentElem = document.createElement('div');
+    studentElem.classList.add('student');
+    studentElem.innerHTML = `
+      <p>ID: ${student.id}</p>
+      <p>Fullname: ${student.fullname}</p>
+      <p>Avg: ${student.avg}</p>
+    `;
+    container.appendChild(studentElem);
+  });
+}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokemon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+   
+    <div style="background-image:url('https://www.gratistodo.com/wp-content/uploads/2016/07/pokemon-wallpapers-22.jpg')" class="flex flex-col gap-10  items-center justify-center text-2xl bg-cover h-screen" >
+      <h1 class="bg-orange-400 p-9 text-3xl font-extrabold text-white rounded-lg">Il miglior Pokedex al Mondo</h1>
+      <input class="p-8 hover:bg-slate-400 rounded-2xl text-2xl" type="text" id="pokemonInput" placeholder="Inserisci nome" />
+      <button class="rounded-lg bg-emerald-800 p-8 m-8 text-white text-3xl cursor-pointer" id="btn">Fai la tua Scelta!</button>
+      <div  class="bg-slate-300 gap-2 p-8 rounded-2xl shadow-md  border-2 border-black" id="pokemonInfo">Il tuo pokemon scelto è...</div>
+    </div>
+    <script>
+      function $(elId) {
+        return document.getElementById(elId);
+      }
+      let pokemonInput = $("pokemonInput");
+      let btn = $("btn");
+      let pokemonInfo = $("pokemonInfo");
+
+      function trovaPokemon() {
+        let pokemonName = pokemonInput.value.trim();
+        if (pokemonName === "") {
+          alert("Inserisci il nome di un Pokemon");
+          return;
+        }
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+          .then((response) => response.json())
+          .then((data) => {
+            let name = data.name;
+            let image = data.sprites.front_default;
+            let weight = data.weight;
+            let height = data.height;
+            let id = data.id;
+            pokemonInfo.innerHTML = `
+            <h2>${name}</h2>
+            <img src="${image}" alt="${name}">
+            <p><b>Peso:</b> ${weight}</p>
+            <p><b>Altezza:</b> ${height}</p>
+            <p><b>Numero nel Pokedex:</b> ${id}</p>
+      `;
+          })
+          .catch(error => {
+      pokemonInfo.innerHTML = 'Il Pokemon non esiste.';
+        });
+        
+      }
+      btn.addEventListener('click', trovaPokemon);
+    </script>
+  </body>
+</html>
